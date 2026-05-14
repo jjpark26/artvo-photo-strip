@@ -2,25 +2,20 @@
 <html>
 <head>
     <title>Admin Page</title>
+    <meta http-equiv="refresh" content="5">
 </head>
 <body>
-
     <h1>Photo Strip Results</h1>
 
+    <p>Total files: {{ files|length }}</p>
+
     {% for file in files %}
-
-        <div style="margin-bottom:40px;">
-
-            <p>{{ file }}</p>
-
-            <img
-                src="/image/{{ file }}"
-                width="300"
-            >
-
+        <div style="margin-bottom: 40px;">
+            <h3>{{ file }}</h3>
+            <img src="{{ url_for('image', filename=file) }}" style="width: 350px;">
+            <br>
+            <a href="{{ url_for('image', filename=file) }}" target="_blank">Open for Print</a>
         </div>
-
     {% endfor %}
-
 </body>
 </html>
