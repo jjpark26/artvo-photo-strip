@@ -88,17 +88,18 @@ def home():
 
 @app.route("/admin")
 def admin():
-
     files = []
 
     for filename in os.listdir(OUTPUT_FOLDER):
         if filename.lower().endswith((".jpg", ".jpeg", ".png")):
             files.append(filename)
 
-    files.sort(reverse=True)
+    files.sort(
+        key=lambda f: os.path.getmtime(os.path.join(OUTPUT_FOLDER, f)),
+        reverse=True
+    )
 
     return render_template("admin.html", files=files)
-
 
 @app.route("/debug")
 def debug():
