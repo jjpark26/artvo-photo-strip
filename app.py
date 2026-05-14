@@ -57,7 +57,7 @@ def home():
         date_text = datetime.now().strftime("%Y.%m.%d")
 
         draw.text(
-            (760, 1180),
+            (620, 1189),
             date_text,
             fill="white",
             font=font_date
@@ -66,11 +66,11 @@ def home():
         bbox = draw.textbbox((0, 0), message, font=font_message)
         text_width = bbox[2] - bbox[0]
 
-        right_edge = 920
+        right_edge = 1073
         x_position = right_edge - text_width
 
         draw.text(
-            (x_position, 1240),
+            (x_position, 1260),
             message,
             fill="white",
             font=font_message
