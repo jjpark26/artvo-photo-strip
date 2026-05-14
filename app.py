@@ -88,6 +88,7 @@ def home():
 
 @app.route("/admin")
 def admin():
+
     files = []
 
     for filename in os.listdir(OUTPUT_FOLDER):
@@ -97,6 +98,15 @@ def admin():
     files.sort(reverse=True)
 
     return render_template("admin.html", files=files)
+
+
+@app.route("/debug")
+def debug():
+    return {
+        "output_folder": OUTPUT_FOLDER,
+        "output_exists": os.path.exists(OUTPUT_FOLDER),
+        "files": os.listdir(OUTPUT_FOLDER)
+    }
 
 
 @app.route("/image/<filename>")
