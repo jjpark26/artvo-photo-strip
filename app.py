@@ -47,8 +47,12 @@ def home():
 
         draw = ImageDraw.Draw(template)
 
-        font_date = ImageFont.truetype("arial.ttf", 32)
-        font_message = ImageFont.truetype("arial.ttf", 28)
+        try:
+            font_date = ImageFont.truetype("arial.ttf", 32)
+            font_message = ImageFont.truetype("arial.ttf", 28)
+        except:
+            font_date = ImageFont.load_default()
+            font_message = ImageFont.load_default()
 
         date_text = datetime.now().strftime("%Y.%m.%d")
 
