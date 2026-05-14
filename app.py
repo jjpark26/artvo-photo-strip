@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_file
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageDraw, ImageFont
 from datetime import datetime
 import os
 
@@ -18,11 +18,13 @@ def home():
     if request.method == "POST":
 
         template = Image.open("template.jpg").convert("RGB")
-
+        
+        message = request.form["message"]
+        
         slots = {
-            "photo1": (60, 60, 880, 520),
-            "photo2": (60, 610, 520, 520),
-            "photo3": (610, 610, 330, 330),
+            "photo1": (109, 90, 809, 516),
+            "photo2": (109, 635, 448, 561),
+            "photo3": (590, 635, 330, 492)
         }
 
         for name, slot in slots.items():
@@ -43,7 +45,35 @@ def home():
         filename = f"result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
         output_path = os.path.join(OUTPUT_FOLDER, filename)
 
+        draw = ImageDraw.Draw(template)
+
+        font_date = ImageFont.truetype("arial.ttf", 32)
+        font_message = ImageFont.truetype("arial.ttf", 28)
+
+        date_text = datetime.now().strftime("%Y.%m.%d")
+
+        draw.text(
+            (760, 1180),
+            date_text,
+            fill="white",
+            font=font_date
+        )
+
+        bbox = draw.textbbox((0, 0), message, font=font_message)
+        text_width = bbox[2] - bbox[0]
+
+        right_edge = 920
+        x_position = right_edge - text_width
+
+        draw.text(
+            (x_position, 1240),
+            message,
+            fill="white",
+            font=font_message
+        )
+
         template.save(output_path)
+
 
         return render_template("submitted.html")
 
