@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Photo Strips</title>
+</head>
+<body>
+
+<h1>Photo Strip Admin</h1>
+
+{% for file in files %}
+    <div style="margin-bottom: 40px;">
+        <h3>{{ file }}</h3>
+        <img src="/image/{{ file }}" style="width: 400px;">
+        <br><br>
+        <a href="/image/{{ file }}" target="_blank">
+            Open for Print
+        </a>
+    </div>
+{% endfor %}
+
+</body>
+</html>

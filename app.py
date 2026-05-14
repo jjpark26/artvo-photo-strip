@@ -20,16 +20,12 @@ def home():
         template = Image.open("template.jpg").convert("RGB")
 
         slots = {
-            "photo1": (150, 60, 800, 500),
-            "photo2": (150, 610, 520, 520),
+            "photo1": (60, 60, 880, 520),
+            "photo2": (60, 610, 520, 520),
             "photo3": (610, 610, 330, 330),
         }
 
         for name, slot in slots.items():
-
-            if name not in request.files:
-                return f"{name} missing"
-
             photo = request.files[name]
 
             if photo.filename == "":
@@ -39,23 +35,38 @@ def home():
             photo.save(filepath)
 
             img = Image.open(filepath).convert("RGB")
-
             x, y, w, h = slot
 
             img = ImageOps.fit(img, (w, h))
-
             template.paste(img, (x, y))
 
-        output_path = os.path.join(
-            OUTPUT_FOLDER,
-            f"result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
-        )
+        filename = f"result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
+        output_path = os.path.join(OUTPUT_FOLDER, filename)
 
         template.save(output_path)
 
-        return send_file(output_path, mimetype="image/jpeg")
+        return render_template("submitted.html")
 
     return render_template("index.html")
+
+
+@app.route("/admin")
+def admin():
+    files = []
+
+    for filename in os.listdir(OUTPUT_FOLDER):
+        if filename.lower().endswith((".jpg", ".jpeg", ".png")):
+            files.append(filename)
+
+    files.sort(reverse=True)
+
+    return render_template("admin.html", files=files)
+
+
+@app.route("/image/<filename>")
+def image(filename):
+    file_path = os.path.join(OUTPUT_FOLDER, filename)
+    return send_file(file_path, mimetype="image/jpeg")
 
 
 if __name__ == "__main__":
