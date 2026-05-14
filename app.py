@@ -78,6 +78,8 @@ def home():
 
         template.save(output_path)
 
+        print("SAVED OUTPUT:", output_path)
+        print("OUTPUT FILES:", os.listdir(OUTPUT_FOLDER))
 
         return render_template("submitted.html")
 
