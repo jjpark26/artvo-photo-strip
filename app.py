@@ -48,16 +48,22 @@ def home():
         draw = ImageDraw.Draw(template)
 
         try:
-            font_date = ImageFont.truetype("arial.ttf", 32)
-            font_message = ImageFont.truetype("arial.ttf", 28)
+            font_date = ImageFont.truetype("arial.ttf", 60)
+            font_message = ImageFont.truetype("arial.ttf",30)
         except:
             font_date = ImageFont.load_default()
             font_message = ImageFont.load_default()
 
         date_text = datetime.now().strftime("%Y.%m.%d")
 
+        date_bbox = draw.textbbox((0, 0), date_text, font=font_date)
+        date_width = date_bbox[2] - date_bbox[0]
+
+        date_right_edge = 920
+        date_x_position = date_right_edge - date_width
+
         draw.text(
-            (620, 1189),
+            (date_x_position, 1260),
             date_text,
             fill="white",
             font=font_date
@@ -66,11 +72,11 @@ def home():
         bbox = draw.textbbox((0, 0), message, font=font_message)
         text_width = bbox[2] - bbox[0]
 
-        right_edge = 1073
+        right_edge = 920
         x_position = right_edge - text_width
 
         draw.text(
-            (x_position, 1260),
+            (x_position, 1196),
             message,
             fill="white",
             font=font_message
